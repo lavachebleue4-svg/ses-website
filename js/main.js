@@ -138,48 +138,6 @@ if (!prefersReducedMotion && window.matchMedia("(hover: hover)").matches) {
   }));
   scene.add(stars);
 
-  /* Central DNA double helix (medical e-learning core) */
-  const coreGroup = new THREE.Group();
-
-  const DNA_COUNT = 170;
-  const dnaRadius = 2.0, dnaHeight = 11, dnaTwist = 1.25;
-  const strandA = new Float32Array(DNA_COUNT * 3);
-  const strandB = new Float32Array(DNA_COUNT * 3);
-  const rungVerts = [];
-  for (let i = 0; i < DNA_COUNT; i++) {
-    const y = (i / (DNA_COUNT - 1) - 0.5) * dnaHeight;
-    const a = y * dnaTwist;
-    strandA[i * 3] = Math.cos(a) * dnaRadius;
-    strandA[i * 3 + 1] = y;
-    strandA[i * 3 + 2] = Math.sin(a) * dnaRadius;
-    strandB[i * 3] = Math.cos(a + Math.PI) * dnaRadius;
-    strandB[i * 3 + 1] = y;
-    strandB[i * 3 + 2] = Math.sin(a + Math.PI) * dnaRadius;
-    // Base-pair rungs between the strands
-    if (i % 8 === 0) {
-      rungVerts.push(strandA[i * 3], y, strandA[i * 3 + 2], strandB[i * 3], y, strandB[i * 3 + 2]);
-    }
-  }
-  const strandMat = (color) => new THREE.PointsMaterial({
-    color, size: 0.075, transparent: true, opacity: 0.85, depthWrite: false,
-  });
-  const strandAGeo = new THREE.BufferGeometry();
-  strandAGeo.setAttribute("position", new THREE.BufferAttribute(strandA, 3));
-  const strandAPoints = new THREE.Points(strandAGeo, strandMat(0x4ee1ff));
-  coreGroup.add(strandAPoints);
-  const strandBGeo = new THREE.BufferGeometry();
-  strandBGeo.setAttribute("position", new THREE.BufferAttribute(strandB, 3));
-  const strandBPoints = new THREE.Points(strandBGeo, strandMat(0xe879f9));
-  coreGroup.add(strandBPoints);
-  const rungGeo = new THREE.BufferGeometry();
-  rungGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(rungVerts), 3));
-  coreGroup.add(new THREE.LineSegments(rungGeo, new THREE.LineBasicMaterial({
-    color: 0x8b5cf6, transparent: true, opacity: 0.3,
-  })));
-
-  coreGroup.rotation.z = 0.14;
-  scene.add(coreGroup);
-
   /* Mouse parallax + scroll drift */
   let mouseX = 0, mouseY = 0, scrollY = 0;
   window.addEventListener("pointermove", (e) => {
@@ -200,18 +158,13 @@ if (!prefersReducedMotion && window.matchMedia("(hover: hover)").matches) {
     const t = clock.getElapsedTime();
 
     if (!prefersReducedMotion) {
-      stars.rotation.y = t * 0.015;
+      stars.rotation.y = t * 0.015 + scrollY * 0.0002;
       stars.rotation.x = Math.sin(t * 0.05) * 0.05;
 
-      coreGroup.rotation.y = t * 0.22 + scrollY * 0.0006;
-      strandAPoints.material.opacity = 0.75 + Math.sin(t * 1.8) * 0.15;
-      strandBPoints.material.opacity = 0.75 + Math.cos(t * 1.8) * 0.15;
-
-      // Parallax: ease camera toward mouse; sink helix as user scrolls
+      // Parallax: ease camera toward mouse
       camera.position.x += (mouseX * 1.2 - camera.position.x) * 0.03;
       camera.position.y += (-mouseY * 0.8 - camera.position.y) * 0.03;
       camera.lookAt(0, 0, 0);
-      coreGroup.position.y = -scrollY * 0.0022;
     }
 
     renderer.render(scene, camera);
