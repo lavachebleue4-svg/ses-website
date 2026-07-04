@@ -90,7 +90,7 @@ if (!prefersReducedMotion && window.matchMedia("(hover: hover)").matches) {
   });
 }
 
-/* ---------- Three.js scene: starfield + wireframe core ---------- */
+/* ---------- Three.js scene: starfield + DNA double helix ---------- */
 (function initScene() {
   if (typeof THREE === "undefined") return;
 
@@ -138,67 +138,46 @@ if (!prefersReducedMotion && window.matchMedia("(hover: hover)").matches) {
   }));
   scene.add(stars);
 
-  /* Central wireframe icosahedron + inner glow core */
+  /* Central DNA double helix (medical e-learning core) */
   const coreGroup = new THREE.Group();
 
-  const wire = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(2.4, 1),
-    new THREE.MeshBasicMaterial({ color: 0x4ee1ff, wireframe: true, transparent: true, opacity: 0.22 })
-  );
-  coreGroup.add(wire);
-
-  const wireOuter = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(3.1, 0),
-    new THREE.MeshBasicMaterial({ color: 0x8b5cf6, wireframe: true, transparent: true, opacity: 0.12 })
-  );
-  coreGroup.add(wireOuter);
-
-  const core = new THREE.Mesh(
-    new THREE.SphereGeometry(0.5, 32, 32),
-    new THREE.MeshBasicMaterial({ color: 0x4ee1ff, transparent: true, opacity: 0.5 })
-  );
-  coreGroup.add(core);
-
-  /* Neural nodes on the icosahedron vertices (AI) */
-  const nodes = new THREE.Points(wire.geometry, new THREE.PointsMaterial({
-    color: 0x4ee1ff, size: 0.09, transparent: true, opacity: 0.9, depthWrite: false,
-  }));
-  coreGroup.add(nodes);
-
-  /* DNA double-helix ring around the core (medical) */
-  const helix = new THREE.Group();
-  const HELIX_COUNT = 110, helixRadius = 4.3, helixAmp = 0.55, helixTurns = 9;
-  const strandA = new Float32Array(HELIX_COUNT * 3);
-  const strandB = new Float32Array(HELIX_COUNT * 3);
+  const DNA_COUNT = 170;
+  const dnaRadius = 2.0, dnaHeight = 11, dnaTwist = 1.25;
+  const strandA = new Float32Array(DNA_COUNT * 3);
+  const strandB = new Float32Array(DNA_COUNT * 3);
   const rungVerts = [];
-  for (let i = 0; i < HELIX_COUNT; i++) {
-    const a = (i / HELIX_COUNT) * Math.PI * 2;
-    const x = Math.cos(a) * helixRadius;
-    const z = Math.sin(a) * helixRadius;
-    const y = Math.sin(a * helixTurns) * helixAmp;
-    strandA[i * 3] = x; strandA[i * 3 + 1] = y; strandA[i * 3 + 2] = z;
-    strandB[i * 3] = x; strandB[i * 3 + 1] = -y; strandB[i * 3 + 2] = z;
+  for (let i = 0; i < DNA_COUNT; i++) {
+    const y = (i / (DNA_COUNT - 1) - 0.5) * dnaHeight;
+    const a = y * dnaTwist;
+    strandA[i * 3] = Math.cos(a) * dnaRadius;
+    strandA[i * 3 + 1] = y;
+    strandA[i * 3 + 2] = Math.sin(a) * dnaRadius;
+    strandB[i * 3] = Math.cos(a + Math.PI) * dnaRadius;
+    strandB[i * 3 + 1] = y;
+    strandB[i * 3 + 2] = Math.sin(a + Math.PI) * dnaRadius;
     // Base-pair rungs between the strands
-    if (i % 5 === 0) rungVerts.push(x, y, z, x, -y, z);
+    if (i % 8 === 0) {
+      rungVerts.push(strandA[i * 3], y, strandA[i * 3 + 2], strandB[i * 3], y, strandB[i * 3 + 2]);
+    }
   }
   const strandMat = (color) => new THREE.PointsMaterial({
-    color, size: 0.06, transparent: true, opacity: 0.85, depthWrite: false,
+    color, size: 0.075, transparent: true, opacity: 0.85, depthWrite: false,
   });
   const strandAGeo = new THREE.BufferGeometry();
   strandAGeo.setAttribute("position", new THREE.BufferAttribute(strandA, 3));
-  helix.add(new THREE.Points(strandAGeo, strandMat(0x4ee1ff)));
+  const strandAPoints = new THREE.Points(strandAGeo, strandMat(0x4ee1ff));
+  coreGroup.add(strandAPoints);
   const strandBGeo = new THREE.BufferGeometry();
   strandBGeo.setAttribute("position", new THREE.BufferAttribute(strandB, 3));
-  helix.add(new THREE.Points(strandBGeo, strandMat(0xe879f9)));
+  const strandBPoints = new THREE.Points(strandBGeo, strandMat(0xe879f9));
+  coreGroup.add(strandBPoints);
   const rungGeo = new THREE.BufferGeometry();
   rungGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(rungVerts), 3));
-  helix.add(new THREE.LineSegments(rungGeo, new THREE.LineBasicMaterial({
-    color: 0x8b5cf6, transparent: true, opacity: 0.35,
+  coreGroup.add(new THREE.LineSegments(rungGeo, new THREE.LineBasicMaterial({
+    color: 0x8b5cf6, transparent: true, opacity: 0.3,
   })));
-  helix.rotation.x = 0.18;
-  coreGroup.add(helix);
 
-  coreGroup.position.set(0, 0, 0);
+  coreGroup.rotation.z = 0.14;
   scene.add(coreGroup);
 
   /* Mouse parallax + scroll drift */
@@ -224,21 +203,15 @@ if (!prefersReducedMotion && window.matchMedia("(hover: hover)").matches) {
       stars.rotation.y = t * 0.015;
       stars.rotation.x = Math.sin(t * 0.05) * 0.05;
 
-      wire.rotation.y = t * 0.12;
-      wire.rotation.x = t * 0.06;
-      nodes.rotation.copy(wire.rotation);
-      nodes.material.opacity = 0.6 + Math.sin(t * 2.2) * 0.3;
-      wireOuter.rotation.y = -t * 0.07;
-      wireOuter.rotation.z = t * 0.04;
-      helix.rotation.y = t * 0.18;
-      core.scale.setScalar(1 + Math.sin(t * 1.6) * 0.12);
+      coreGroup.rotation.y = t * 0.22 + scrollY * 0.0006;
+      strandAPoints.material.opacity = 0.75 + Math.sin(t * 1.8) * 0.15;
+      strandBPoints.material.opacity = 0.75 + Math.cos(t * 1.8) * 0.15;
 
-      // Parallax: ease camera toward mouse; sink core as user scrolls
+      // Parallax: ease camera toward mouse; sink helix as user scrolls
       camera.position.x += (mouseX * 1.2 - camera.position.x) * 0.03;
       camera.position.y += (-mouseY * 0.8 - camera.position.y) * 0.03;
       camera.lookAt(0, 0, 0);
       coreGroup.position.y = -scrollY * 0.0022;
-      coreGroup.rotation.y = scrollY * 0.0006;
     }
 
     renderer.render(scene, camera);
