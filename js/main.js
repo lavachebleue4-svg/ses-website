@@ -100,7 +100,7 @@ if (!prefersReducedMotion && window.matchMedia("(hover: hover)").matches) {
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x05060f, 0.035);
+  scene.fog = new THREE.FogExp2(0x050a34, 0.035);
 
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.z = 9;
@@ -109,9 +109,9 @@ if (!prefersReducedMotion && window.matchMedia("(hover: hover)").matches) {
   const STAR_COUNT = 2400;
   const positions = new Float32Array(STAR_COUNT * 3);
   const colors = new Float32Array(STAR_COUNT * 3);
-  const cyan = new THREE.Color(0x4ee1ff);
-  const violet = new THREE.Color(0x8b5cf6);
-  const white = new THREE.Color(0xeef0ff);
+  const cyan = new THREE.Color(0x00a9f2);
+  const violet = new THREE.Color(0xb3d4e0);
+  const white = new THREE.Color(0xf4f9fc);
 
   for (let i = 0; i < STAR_COUNT; i++) {
     // Scatter in a large sphere shell around the camera
