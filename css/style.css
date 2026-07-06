@@ -140,6 +140,7 @@ main { position: relative; }
   font-weight: 800; line-height: 1.05; letter-spacing: -0.025em;
 }
 .hero-title .line { display: block; overflow: hidden; }
+.nowrap { white-space: nowrap; }
 .hero-title .line > span {
   display: inline-block;
   transform: translateY(110%);
@@ -425,6 +426,9 @@ main { position: relative; }
 @media (max-width: 960px) {
   .hero-inner { grid-template-columns: 1fr; }
   .hero-media { max-width: 560px; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: clamp(26px, 8.4vw, 40px); }
 }
 @media (max-width: 860px) {
   .about-grid { grid-template-columns: 1fr; }
