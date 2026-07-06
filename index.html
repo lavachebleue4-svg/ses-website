@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=5" />
+  <link rel="stylesheet" href="css/style.css?v=6" />
   <link rel="icon" type="image/png" href="assets/logo-official.png" />
 </head>
 <body>
@@ -19,12 +19,6 @@
       <span>SES</span>
     </div>
   </div>
-
-  <!-- 3D background canvas -->
-  <canvas id="scene"></canvas>
-
-  <!-- Cursor glow -->
-  <div class="cursor-glow" id="cursorGlow"></div>
 
   <!-- Navigation -->
   <header class="nav" id="nav">
@@ -49,20 +43,25 @@
 
     <!-- Hero -->
     <section class="hero">
-      <p class="hero-eyebrow reveal">Software Expert Systems B.V.</p>
-      <h1 class="hero-title">
-        <span class="line"><span>Medical e-learning,</span></span>
-        <span class="line"><span class="grad">powered by AI.</span></span>
-      </h1>
-      <p class="hero-sub reveal">Adaptive courses, realistic 3D anatomy, and interactive video for
-        hospitals, care organizations, and schools — built and supported by our teams in Cebu and
-        the Netherlands.</p>
-      <div class="hero-actions reveal">
-        <a href="#services" class="btn btn-primary">Explore what we do</a>
-        <a href="#careers" class="btn btn-ghost">Careers</a>
-      </div>
-      <div class="hero-scroll" aria-hidden="true">
-        <div class="hero-scroll-dot"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="hero-eyebrow reveal">Software Expert Systems B.V.</p>
+          <h1 class="hero-title">
+            <span class="line"><span>Medical e-learning,</span></span>
+            <span class="line"><span class="grad">powered by AI.</span></span>
+          </h1>
+          <p class="hero-sub reveal">Adaptive courses, realistic 3D anatomy, and interactive video for
+            hospitals, care organizations, and schools — built and supported by our teams in Cebu and
+            the Netherlands.</p>
+          <div class="hero-actions reveal">
+            <a href="#services" class="btn btn-primary">Explore what we do</a>
+            <a href="#careers" class="btn btn-ghost">Careers</a>
+          </div>
+        </div>
+        <div class="hero-media reveal">
+          <img src="assets/team/photo-1.jpg" alt="The SES team at the Cebu office" />
+          <span class="hero-badge">Team SES · Cebu IT Park</span>
+        </div>
       </div>
     </section>
 
@@ -105,34 +104,34 @@
         <h2>Capabilities from<br /><span class="grad">another orbit.</span></h2>
       </div>
       <div class="cards">
-        <article class="card reveal" data-tilt>
+        <article class="card reveal">
           <div class="card-glow"></div>
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12h4l2.5-6 5 12 2.5-6H22" stroke-linejoin="round" stroke-linecap="round"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h4l2.5-6 5 12 2.5-6H22" stroke-linejoin="round" stroke-linecap="round"/></svg>
           </div>
           <h3>Medical E-Learning</h3>
           <p>Cutting-edge digital courses for hospitals, care organizations, and schools, driven by an adaptive learning algorithm that shapes itself to every learner.</p>
         </article>
-        <article class="card reveal" data-tilt>
+        <article class="card reveal">
           <div class="card-glow"></div>
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4m0 12v4M2 12h4m12 0h4M5 5l3 3m8 8 3 3M5 19l3-3m8-8 3-3"/><circle cx="12" cy="12" r="3.5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M2 12h4m12 0h4M5 5l3 3m8 8 3 3M5 19l3-3m8-8 3-3"/><circle cx="12" cy="12" r="3.5"/></svg>
           </div>
           <h3>AI-Powered Production</h3>
           <p>Realistic 3D anatomy, animations, and interactive video — now produced with AI at the heart of the pipeline, turning complex medical concepts into experiences that stick.</p>
         </article>
-        <article class="card reveal" data-tilt>
+        <article class="card reveal">
           <div class="card-glow"></div>
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m8 6-6 6 6 6M16 6l6 6-6 6M13 4l-2 16"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 6-6 6 6 6M16 6l6 6-6 6M13 4l-2 16"/></svg>
           </div>
           <h3>Software Development</h3>
           <p>Our developer team engineers the learning platform end-to-end — with AI accelerating everything from code to deployment.</p>
         </article>
-        <article class="card reveal" data-tilt>
+        <article class="card reveal">
           <div class="card-glow"></div>
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="2"/><rect x="17" y="13" width="4" height="6" rx="2"/><path d="M20 19a4 4 0 0 1-4 3h-2"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="2"/><rect x="17" y="13" width="4" height="6" rx="2"/><path d="M20 19a4 4 0 0 1-4 3h-2"/></svg>
           </div>
           <h3>Dedicated Support</h3>
           <p>Our Cebu-based support team is the backbone of the operation — IT support, data processing, and coordination for institutions across the globe.</p>
@@ -173,7 +172,7 @@
         <h2>One mission,<br /><span class="grad">two hemispheres.</span></h2>
       </div>
       <div class="offices">
-        <article class="office reveal" data-tilt>
+        <article class="office reveal">
           <svg class="office-deco ecg" viewBox="0 0 120 40" aria-hidden="true">
             <polyline points="0,22 28,22 36,22 42,8 50,34 56,4 62,22 74,22 80,16 86,22 120,22" fill="none"/>
           </svg>
@@ -181,7 +180,7 @@
           <p>Skyrise 4, West Geonzon Street<br />Cebu IT Park, Cebu City</p>
           <span class="office-tag">Software Development · AI · Support</span>
         </article>
-        <article class="office reveal" data-tilt>
+        <article class="office reveal">
           <svg class="office-deco neural" viewBox="0 0 120 100" aria-hidden="true">
             <line x1="15" y1="20" x2="60" y2="10"/><line x1="15" y1="20" x2="60" y2="50"/>
             <line x1="15" y1="70" x2="60" y2="50"/><line x1="15" y1="70" x2="60" y2="90"/>
@@ -254,7 +253,6 @@
     </div>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
-  <script src="js/main.js?v=5"></script>
+  <script src="js/main.js?v=6"></script>
 </body>
 </html>
