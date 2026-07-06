@@ -27,6 +27,20 @@ navLinks.querySelectorAll("a").forEach((a) =>
   })
 );
 
+/* ---------- Life at SES photo carousel ---------- */
+window.addEventListener("load", () => {
+  const track = document.querySelector(".photo-track");
+  if (!track) return;
+  const photos = track.querySelectorAll("figure");
+  if (photos.length === 0) {
+    // No team photos in assets/team yet — hide the section entirely
+    document.getElementById("life").style.display = "none";
+    return;
+  }
+  // Duplicate the set once so the -50% drift loops seamlessly
+  photos.forEach((f) => track.appendChild(f.cloneNode(true)));
+});
+
 /* ---------- Cursor glow ---------- */
 const glow = document.getElementById("cursorGlow");
 window.addEventListener("pointermove", (e) => {

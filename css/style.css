@@ -335,6 +335,43 @@ main { position: relative; z-index: 2; }
 .neural circle:nth-of-type(3n) { animation-delay: 1.2s; }
 @keyframes nodePulse { 50% { opacity: 0.3; } }
 
+/* ---------- Life at SES photo carousel ---------- */
+.photo-marquee {
+  overflow: hidden;
+  margin: 0 calc(50% - 50vw);
+  padding: 24px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.photo-track {
+  display: flex; gap: 26px;
+  width: max-content;
+  animation: photoDrift 45s linear infinite;
+}
+.photo-marquee:hover .photo-track { animation-play-state: paused; }
+.photo-track figure {
+  width: 340px; height: 255px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.photo-track figure:nth-child(odd) { transform: rotate(-1.4deg); }
+.photo-track figure:nth-child(even) { transform: rotate(1.4deg); }
+.photo-track figure:hover {
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: 0 12px 44px rgba(0, 169, 242, 0.35);
+  z-index: 2;
+}
+.photo-track img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@keyframes photoDrift { to { transform: translateX(-50%); } }
+
 /* ---------- Careers ---------- */
 .careers-inner {
   text-align: center;
