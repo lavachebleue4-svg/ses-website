@@ -18,30 +18,68 @@ window.addEventListener("load", () => {
   // Duplicate the set once so the drift loops seamlessly
   photos.forEach((f) => track.appendChild(f.cloneNode(true)));
 
+  track.querySelectorAll("img").forEach((img) => { img.draggable = false; });
+
   const marquee = document.querySelector(".photo-marquee");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = lightbox.querySelector("img");
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const DRIFT_SPEED = 22; // px per second — a relaxed stroll
-  const GAP = 26;
   let offset = 0;
-  let paused = false;
-  let tween = null;
-
-  marquee.addEventListener("pointerenter", () => { paused = true; });
-  marquee.addEventListener("pointerleave", () => { paused = false; });
+  let hovered = false;
+  let dragging = false;
+  let dragDist = 0;
+  let startX = 0;
+  let startOffset = 0;
 
   const halfWidth = () => track.scrollWidth / 2;
-  const cardStep = () => photos[0].getBoundingClientRect().width + GAP;
+  const lightboxOpen = () => lightbox.classList.contains("open");
+
+  marquee.addEventListener("pointerenter", () => { hovered = true; });
+  marquee.addEventListener("pointerleave", () => { hovered = false; });
+
+  /* Drag on desktop, swipe on touch */
+  marquee.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    dragDist = 0;
+    startX = e.clientX;
+    startOffset = offset;
+    marquee.setPointerCapture(e.pointerId);
+  });
+  marquee.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    dragDist = Math.max(dragDist, Math.abs(dx));
+    offset = startOffset - dx;
+  });
+  marquee.addEventListener("pointerup", (e) => {
+    if (!dragging) return;
+    dragging = false;
+    // A press that barely moved is a tap/click — enlarge that photo
+    if (dragDist < 8) {
+      const fig = e.target.closest("figure");
+      if (fig) {
+        lightboxImg.src = fig.querySelector("img").src;
+        lightbox.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+    }
+  });
+  marquee.addEventListener("pointercancel", () => { dragging = false; });
+
+  /* Lightbox close: X button, backdrop click, or Escape */
+  const closeLightbox = () => {
+    lightbox.classList.remove("open");
+    document.body.style.overflow = "";
+  };
+  lightbox.addEventListener("click", (e) => { if (e.target !== lightboxImg) closeLightbox(); });
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape" && lightboxOpen()) closeLightbox(); });
 
   let last = performance.now();
   function frame(now) {
     const dt = Math.min((now - last) / 1000, 0.1);
     last = now;
-    if (tween) {
-      const p = Math.min((now - tween.start) / tween.dur, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      offset = tween.from + (tween.to - tween.from) * eased;
-      if (p >= 1) tween = null;
-    } else if (!paused && !reduced) {
+    if (!hovered && !dragging && !reduced && !lightboxOpen()) {
       offset += DRIFT_SPEED * dt;
     }
     const h = halfWidth();
@@ -50,13 +88,6 @@ window.addEventListener("load", () => {
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
-
-  const go = (dir) => {
-    const from = tween ? tween.to : offset;
-    tween = { from: offset, to: from + dir * cardStep(), start: performance.now(), dur: 450 };
-  };
-  document.querySelector(".car-btn.next").addEventListener("click", () => go(1));
-  document.querySelector(".car-btn.prev").addEventListener("click", () => go(-1));
 });
 
 /* ---------- Nav ---------- */

@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=9" />
+  <link rel="stylesheet" href="css/style.css?v=10" />
   <link rel="icon" type="image/png" href="assets/logo-official.png" />
 </head>
 <body>
@@ -216,12 +216,8 @@
         <span class="section-tag">05 — Life at SES</span>
         <h2>The people behind<br /><span class="grad">the work.</span></h2>
       </div>
-      <div class="carousel-wrap reveal">
-        <button class="car-btn prev" type="button" aria-label="Previous photo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div class="photo-marquee" aria-label="Photos of the SES team">
-          <div class="photo-track">
+      <div class="photo-marquee reveal" aria-label="Photos of the SES team — drag to browse, click to enlarge">
+        <div class="photo-track">
           <figure><img src="assets/team/photo-1.jpg" alt="SES team moment" onerror="this.closest('figure').remove()" /></figure>
           <figure><img src="assets/team/photo-2.jpg" alt="SES team moment" onerror="this.closest('figure').remove()" /></figure>
           <figure><img src="assets/team/photo-3.jpg" alt="SES team moment" onerror="this.closest('figure').remove()" /></figure>
@@ -236,11 +232,7 @@
           <figure><img src="assets/team/photo-12.jpg" alt="SES team moment" onerror="this.closest('figure').remove()" /></figure>
           <figure><img src="assets/team/photo-13.jpg" alt="SES team moment" onerror="this.closest('figure').remove()" /></figure>
           <figure><img src="assets/team/photo-14.jpg" alt="SES team moment" onerror="this.closest('figure').remove()" /></figure>
-          </div>
         </div>
-        <button class="car-btn next" type="button" aria-label="Next photo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-        </button>
       </div>
     </section>
 
@@ -258,6 +250,14 @@
     </section>
   </main>
 
+  <!-- Photo lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged team photo">
+    <button class="lightbox-close" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <img src="" alt="SES team photo, enlarged" />
+  </div>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-inner">
@@ -274,6 +274,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=9"></script>
+  <script src="js/main.js?v=10"></script>
 </body>
 </html>

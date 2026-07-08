@@ -341,35 +341,57 @@ main { position: relative; }
 @keyframes nodePulse { 50% { opacity: 0.35; } }
 
 /* ---------- Life at SES photo carousel ---------- */
-.carousel-wrap { position: relative; }
 .photo-marquee {
   overflow: hidden;
   margin: 0 calc(50% - 50vw);
   padding: 24px 0;
+  cursor: grab;
+  touch-action: pan-y;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
+.photo-marquee:active { cursor: grabbing; }
 .photo-track {
   display: flex; gap: 26px;
   width: max-content;
   will-change: transform;
 }
-.car-btn {
-  position: absolute; top: 50%; z-index: 5;
-  transform: translateY(-50%);
-  width: 48px; height: 48px;
+.photo-track img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Lightbox */
+.lightbox {
+  position: fixed; inset: 0; z-index: 95;
+  background: rgba(3, 7, 32, 0.93);
+  display: grid; place-items: center;
+  padding: 24px;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+.lightbox.open { opacity: 1; visibility: visible; }
+.lightbox img {
+  max-width: min(1100px, 94vw);
+  max-height: 84vh;
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  transform: scale(0.96);
+  transition: transform 0.3s ease;
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+  position: absolute; top: 20px; right: 20px;
+  width: 44px; height: 44px;
   border: none; border-radius: 50%;
   cursor: pointer;
   background: var(--accent); color: #fff;
-  box-shadow: var(--shadow-md);
   display: grid; place-items: center;
+  box-shadow: var(--shadow-sm);
   transition: background 0.25s, transform 0.25s;
 }
-.car-btn:hover { background: var(--accent-strong); transform: translateY(-50%) scale(1.1); }
-.car-btn:active { transform: translateY(-50%) scale(0.94); }
-.car-btn.prev { left: 4px; }
-.car-btn.next { right: 4px; }
-.car-btn svg { width: 22px; height: 22px; }
+.lightbox-close:hover { background: var(--accent-strong); transform: scale(1.1); }
+.lightbox-close svg { width: 20px; height: 20px; }
 .photo-track figure {
   width: 340px; height: 255px;
   flex-shrink: 0;
