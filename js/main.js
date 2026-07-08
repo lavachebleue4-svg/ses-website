@@ -15,8 +15,48 @@ window.addEventListener("load", () => {
     document.getElementById("life").style.display = "none";
     return;
   }
-  // Duplicate the set once so the -50% drift loops seamlessly
+  // Duplicate the set once so the drift loops seamlessly
   photos.forEach((f) => track.appendChild(f.cloneNode(true)));
+
+  const marquee = document.querySelector(".photo-marquee");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const DRIFT_SPEED = 22; // px per second — a relaxed stroll
+  const GAP = 26;
+  let offset = 0;
+  let paused = false;
+  let tween = null;
+
+  marquee.addEventListener("pointerenter", () => { paused = true; });
+  marquee.addEventListener("pointerleave", () => { paused = false; });
+
+  const halfWidth = () => track.scrollWidth / 2;
+  const cardStep = () => photos[0].getBoundingClientRect().width + GAP;
+
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min((now - last) / 1000, 0.1);
+    last = now;
+    if (tween) {
+      const p = Math.min((now - tween.start) / tween.dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      offset = tween.from + (tween.to - tween.from) * eased;
+      if (p >= 1) tween = null;
+    } else if (!paused && !reduced) {
+      offset += DRIFT_SPEED * dt;
+    }
+    const h = halfWidth();
+    offset = ((offset % h) + h) % h;
+    track.style.transform = `translateX(${-offset}px)`;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  const go = (dir) => {
+    const from = tween ? tween.to : offset;
+    tween = { from: offset, to: from + dir * cardStep(), start: performance.now(), dur: 450 };
+  };
+  document.querySelector(".car-btn.next").addEventListener("click", () => go(1));
+  document.querySelector(".car-btn.prev").addEventListener("click", () => go(-1));
 });
 
 /* ---------- Nav ---------- */
